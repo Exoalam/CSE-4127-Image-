@@ -1,6 +1,16 @@
 import cv2
 import numpy as np
 
+def mean():
+    for x in range(padding, output_image_h-padding):
+        for y in range(padding, output_image_w-padding):
+            temp = 0
+            for i in range(-padding, padding+1):
+                for j in range(-padding, padding+1):
+                    temp += img[x-i, y-j]
+            output[x,y] = temp/kernel.size
+
+
 img = cv2.imread('input.png', cv2.IMREAD_GRAYSCALE)
 
 image_h = img.shape[0]
@@ -17,19 +27,30 @@ output_image_w = image_w + kernel.shape[0] - 1
 
 output = np.zeros((output_image_h, output_image_w))
 
+# for x in range(padding, output_image_h-padding):
+#     for y in range(padding, output_image_w-padding):
+#         temp = 0
+#         normalize = 0
+#         for i in range(-padding, padding+1):
+#             for j in range(-padding, padding+1):
+#                 temp += kernel[i+padding][j+padding] * img[x-i][y-j]
+#         #         normalize += kernel[i+padding, j+padding]
+#         #print(temp/255)
+#         output[x,y] = temp/255
+#         #output[x,y] /= 255 
+
 for x in range(padding, output_image_h-padding):
     for y in range(padding, output_image_w-padding):
         temp = 0
-        normalize = 0
         for i in range(-padding, padding+1):
             for j in range(-padding, padding+1):
-                temp += kernel[i+padding][j+padding] * img[x-i][y-j]
-        #         normalize += kernel[i+padding, j+padding]
-        #print(temp/255)
-        output[x,y] = temp/255
-        #output[x,y] /= 255 
-cv2.imshow('frame', kernel)
+                temp += img[x-i, y-j]
+        output[x,y] = temp/(kernel.shape[0] * kernel.shape[1])
+        output[x,y] /= 255
+
+cv2.imshow('frame', output)
 
 cv2.waitKey()
 
 cv2.destroyAllWindows()
+
