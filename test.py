@@ -73,6 +73,7 @@ contrast_stretching_output = np.zeros((image_h, image_w))
 #         median_output[x,y] = temp[median]/255
 
 #gaussian
+#function
 # for x in range(padding, output_image_h-padding):
 #     for y in range(padding, output_image_w-padding):
 #         temp = 0
