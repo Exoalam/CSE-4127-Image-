@@ -114,7 +114,8 @@ contrast_stretching_output = np.zeros((image_h, image_w))
 #         for i in range(-padding_x, padding_x+1):
 #             for j in range(-padding_y, padding_y+1):
 #                 temp += sobel_kernel_horizontal[i+padding_x][j+padding_y] * img[x-i][y-j]
-#         sobel_output_horizontal[x,y] = temp        
+        
+#         sobel_output_horizontal[x,y] = temp       
 # sobel_output_horizontal = cv2.normalize(sobel_output_horizontal, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_32F)     
 
 # for x in range(padding_x, output_image_h-padding_x):
@@ -124,7 +125,7 @@ contrast_stretching_output = np.zeros((image_h, image_w))
 #         for i in range(-padding_x, padding_x+1):
 #             for j in range(-padding_y, padding_y+1):
 #                 temp += sobel_kernel_vertical[i+padding_x][j+padding_y] * img[x-i][y-j]
-#         sobel_output_vertical[x,y] = temp        
+#         sobel_output_vertical[x,y] = temp       
 # sobel_output_vertical = cv2.normalize(sobel_output_vertical, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_32F)    
  
 #laplasian
@@ -134,14 +135,14 @@ contrast_stretching_output = np.zeros((image_h, image_w))
 #         for i in range(-padding_x, padding_x+1):
 #             for j in range(-padding_y, padding_y+1):
 #                 temp += laplacian_kernel[i+padding_x][j+padding_y] * img[x-i][y-j]
-#         laplacian_output[x,y] = temp      
+#         laplacian_output[x,y] = temp/255     
 # print(laplacian_output)        
-# laplacian_output = cv2.normalize(laplacian_output, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_32F)    
+#laplacian_output = cv2.normalize(laplacian_output, None, 0, 1, cv2.NORM_MINMAX)    
 
 cv2.imshow('input', img)
-# cv2.imshow('sobel_h', sobel_output_horizontal)
-# cv2.imshow('sobel_v', sobel_output_vertical)
-cv2.imshow('laplacian', laplacian_output)
+cv2.imshow('sobel_h', sobel_output_horizontal)
+cv2.imshow('sobel_v', sobel_output_vertical)
+# cv2.imshow('laplacian', laplacian_output)
 
 cv2.waitKey()
 
