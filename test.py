@@ -93,17 +93,32 @@ contrast_stretching_output = np.zeros((image_h, image_w))
 # median_output = cv2.normalize(median_output, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_32F)        
 
 #gaussian
-#function
-# for x in range(padding_x, output_image_h-padding_x):
-#     for y in range(padding_y, output_image_w-padding_y):
+# def gaussian(k_size, sigma):
+#     gas_kernel = np.zeros((k_size, k_size))
+#     norm = 0
+#     gas_padding = (gas_kernel.shape[0] - 1) // 2
+#     for x in range(-gas_padding, gas_padding+1):
+#         for y in range(-gas_padding, gas_padding+1):
+#             c = 1/(2*3.1416*(sigma ** 2))
+#             gas_kernel[x+gas_padding, y+gas_padding] = c * math.exp(-(x ** 2 + y ** 2)/(2 * sigma ** 2))
+#             norm += gas_kernel[x+gas_padding, y+gas_padding]
+#     return gas_kernel/norm
+# k_size = 7
+# gaussian_kernel = gaussian(7, 2)
+# gaussian_padding = (k_size - 1) // 2
+# gaussian_output_h = image_h + gaussian_padding - 1
+# gaussian_output_w = image_w + gaussian_padding - 1
+# for x in range(gaussian_padding, gaussian_output_h-gaussian_padding):
+#     for y in range(gaussian_padding, gaussian_output_w-gaussian_padding):
 #         temp = 0
 #         normalize = 0
-#         for i in range(-padding_x, padding_x+1):
-#             for j in range(-padding_y, padding_y+1):
-#                 temp += kernel[i+padding_x][j+padding_y] * img[x-i][y-j]
+#         for i in range(-gaussian_padding, gaussian_padding+1):
+#             for j in range(-gaussian_padding, gaussian_padding+1):
+#                 temp += gaussian_kernel[i+gaussian_padding][j+gaussian_padding] * img[x-i][y-j]
 #         #         normalize += kernel[i+padding, j+padding]
 #         #print(temp/255)
-#         gaussian_output[x,y] = temp/255
+#         gaussian_output[x,y] = temp
+# gaussian_output = cv2.normalize(gaussian_output, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_32F)            
 #         #output[x,y] /= 255 
 
 #sobel
@@ -140,9 +155,10 @@ contrast_stretching_output = np.zeros((image_h, image_w))
 #laplacian_output = cv2.normalize(laplacian_output, None, 0, 1, cv2.NORM_MINMAX)    
 
 cv2.imshow('input', img)
-cv2.imshow('sobel_h', sobel_output_horizontal)
-cv2.imshow('sobel_v', sobel_output_vertical)
+# cv2.imshow('sobel_h', sobel_output_horizontal)
+# cv2.imshow('sobel_v', sobel_output_vertical)
 # cv2.imshow('laplacian', laplacian_output)
+cv2.imshow('gaussian', gaussian_output)
 
 cv2.waitKey()
 
