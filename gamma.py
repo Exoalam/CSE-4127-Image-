@@ -12,7 +12,6 @@ for x in range(0,image.shape[0]):
 
 output = cv2.normalize(output,None,0,1,cv2.NORM_MINMAX)
 
-print(output)
 
 cv2.imshow('Input', image)
 cv2.imshow('Gamma Output',output)       
