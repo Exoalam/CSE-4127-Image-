@@ -26,7 +26,7 @@ def vector_to_matrix(input, output_shape):
 
     return output
 
-img = cv2.imread('rsz2.png', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('rsz_input.png', cv2.IMREAD_GRAYSCALE)
 
 kernel = np.array(([1,2,1],
                   [2,4,2],
@@ -62,7 +62,7 @@ c = np.array(c)
 doubly_indices = np.zeros((c.shape[0],img.shape[0]), dtype=int)
 for i in range(img.shape[0]):
     doubly_indices[i:c.shape[0],i] += c[0:c.shape[0]-i]
-    
+
 h = toeplitz_matrix.shape[0] * doubly_indices.shape[0]
 w = toeplitz_matrix.shape[1] * doubly_indices.shape[1]
 doubly_blocked_shape = [h, w]
@@ -83,7 +83,10 @@ output_vector = np.matmul(doubly_blocked, input_vector)
 output_image = vector_to_matrix(output_vector,(output_x,output_y))
 
 output_image = cv2.normalize(output_image,None,0,1,cv2.NORM_MINMAX)
+
+cv2.imshow('input', img)
 cv2.imshow('output', output_image)
+cv2.imshow('builtin',cv2.filter2D(src=img, ddepth=-1, kernel=kernel))
 
 cv2.waitKey(0)
 
