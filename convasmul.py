@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from scipy.linalg import toeplitz
 
 
 def matrix_to_vector(input):
