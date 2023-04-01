@@ -52,18 +52,21 @@ toeplitz_list = []
 for i in range(kernel_zero_padded.shape[0]-1,-1,-1):
     c = kernel_zero_padded[i,:]
     r = np.r_[c[0], np.zeros(img_w-1, dtype=int)]
-
-    toeplitz_matrix = toeplitz(c,r)
+    toeplitz_matrix = np.zeros((kernel_zero_padded.shape[0], img.shape[1]))
+    for j in range(toeplitz_matrix.shape[0]-kernel_x+1):
+        toeplitz_matrix[j:j+kernel_x,j] += c[0:kernel_y]
     toeplitz_list.append(toeplitz_matrix)
 
 c = range(1, kernel_zero_padded.shape[0] + 1)
-r = np.r_[c[0], np.zeros(img_h-1, dtype=int)]
-doubly_indices = toeplitz(c,r)
+c = np.array(c)
+doubly_indices = np.zeros((c.shape[0],img.shape[0]), dtype=int)
+for i in range(img.shape[0]):
+    doubly_indices[i:c.shape[0],i] += c[0:c.shape[0]-i]
+    
 h = toeplitz_matrix.shape[0] * doubly_indices.shape[0]
 w = toeplitz_matrix.shape[1] * doubly_indices.shape[1]
 doubly_blocked_shape = [h, w]
 doubly_blocked = np.zeros(doubly_blocked_shape)
-print(toeplitz_list[0])
 b_h, b_w = toeplitz_matrix.shape
 
 for i in range(doubly_indices.shape[0]):
