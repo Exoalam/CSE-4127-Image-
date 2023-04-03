@@ -1,13 +1,14 @@
 import cv2
 import numpy as np
 
+#Convolution using Matrix Multiplication
 
 def matrix_to_vector(input):
     input_h, input_w = input.shape
     output_vector = np.zeros(input_h*input_w, dtype=input.dtype)
 
-    input = np.flipud(input)
     for i,row in enumerate(input):
+        i = input_h - i - 1
         st = i * input_w
         nd = st + input_w
         output_vector[st:nd] = row
@@ -20,12 +21,11 @@ def vector_to_matrix(input, output_shape):
     for i in range(output_h):
         st = i * output_w
         nd = st + output_w
-        output[i,:] = input[st:nd]
-    output = np.flipud(output)   
+        output[output_h - i - 1,:] = input[st:nd] 
 
     return output
 
-img = cv2.imread('rsz_input.png', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('rsz_image.png', cv2.IMREAD_GRAYSCALE)
 
 kernel = np.array(([1,2,1],
                   [2,4,2],
@@ -83,9 +83,35 @@ output_image = vector_to_matrix(output_vector,(output_x,output_y))
 
 output_image = cv2.normalize(output_image,None,0,1,cv2.NORM_MINMAX)
 
+
+#Traditional Convolution
+
+image_h = img.shape[0]
+image_w = img.shape[1]
+kernel_size = 3
+
+gaussian_kernel = kernel
+padding_x = (kernel_size - 1)//2 
+padding_y = (kernel_size - 1)//2 
+
+img = cv2.copyMakeBorder(img, padding_y, padding_y, padding_x, padding_x, cv2.BORDER_CONSTANT)
+
+output_image_h = image_h + kernel_size - 1
+output_image_w = image_w + kernel_size - 1
+
+gaussian_output = np.zeros((output_image_h,output_image_w))
+for x in range(padding_x, output_image_h-padding_x):
+    for y in range(padding_y, output_image_w-padding_y):
+        temp = 0
+        for i in range(-padding_x, padding_x+1):
+            for j in range(-padding_y, padding_y+1):
+                temp += img[x-i, y-j]*gaussian_kernel[i+padding_x,j+padding_y]
+        gaussian_output[x,y] = temp
+gaussian_output = cv2.normalize(gaussian_output, None, 0, 1, cv2.NORM_MINMAX)    
+
 cv2.imshow('input', img)
-cv2.imshow('output', output_image)
-cv2.imshow('builtin',cv2.filter2D(src=img, ddepth=-1, kernel=kernel))
+cv2.imshow('Toeplitz', output_image)
+cv2.imshow('Convolution', gaussian_output)
 
 cv2.waitKey(0)
 
