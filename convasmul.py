@@ -37,9 +37,6 @@ img_h, img_w = img.shape
 
 kernel_x, kernel_y = kernel.shape
 
-padding_x = (kernel_x - 1) // 2
-padding_y = (kernel_y - 1) // 2
-
 
 output_x = img_h + kernel_x - 1
 output_y = img_w + kernel_y - 1
@@ -50,7 +47,7 @@ toeplitz_list = []
 
 for i in range(kernel_zero_padded.shape[0]-1,-1,-1):
     c = kernel_zero_padded[i,:]
-    r = np.r_[c[0], np.zeros(img_w-1, dtype=int)]
+    #r = np.r_[c[0], np.zeros(img_w-1, dtype=int)]
     toeplitz_matrix = np.zeros((kernel_zero_padded.shape[0], img.shape[1]))
     for j in range(toeplitz_matrix.shape[0]-kernel_x+1):
         toeplitz_matrix[j:j+kernel_x,j] += c[0:kernel_y]
