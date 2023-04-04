@@ -36,7 +36,7 @@ output = np.zeros((img_h,img_w))
 for i in range(img_h):
     for j in range(img_w):
         intensity = img[i,j]
-        output[i,j] = np.round(255*cdf[intensity])
+        output[i,j] = np.round(cdf[intensity])
 
 output = cv2.normalize(output, None, 0, 1, cv2.NORM_MINMAX)
 
@@ -65,6 +65,8 @@ temp = 0
 for i in range(256):
     temp += output_pdf[i]
     output_cdf[i] = temp
+
+output_cdf *= 255
 f1 = plt.figure(6)
 plt.title(label="Output CDF",fontsize=20,color="black")
 plt.plot(output_cdf)
