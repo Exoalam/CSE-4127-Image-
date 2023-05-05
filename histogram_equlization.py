@@ -13,7 +13,7 @@ plt.hist(img.ravel(),256,[0,256])
 histogram = np.zeros(256)
 for i in range(img_h):
     for j in range(img_w):
-        intensity = img[i,j]
+        intensity = img[i,j]                                               
         histogram[intensity] += 1
 pdf = histogram/(img_h*img_w) 
 f1 = plt.figure(2)
@@ -37,6 +37,8 @@ for i in range(img_h):
     for j in range(img_w):
         intensity = img[i,j]
         output[i,j] = np.round(cdf[intensity])
+        print("original:",intensity)
+        print("updated:",output[i,j])
 
 output = cv2.normalize(output, None, 0, 1, cv2.NORM_MINMAX)
 
