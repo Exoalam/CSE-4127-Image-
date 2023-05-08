@@ -15,7 +15,7 @@ def find(input, target):
 
 x = 256
 k = 2
-u = 100
+u = 3
 
 Erlang_Distribution = np.zeros(x)
 for i in range(x):
@@ -73,7 +73,9 @@ output = output * 255
 
 output = output.astype(np.uint8)
 output_histogram = np.zeros(256)
-
+f1 = plt.figure(4)
+plt.title(label="Histogram of output Image",fontsize=20,color="black")
+plt.hist(output.ravel(),256,[0,256])
 for i in range(img_h):
     for j in range(img_w):
         intensity = output[i,j]
