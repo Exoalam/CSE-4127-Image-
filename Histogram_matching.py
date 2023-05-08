@@ -4,9 +4,10 @@ import numpy as np
 import math
 
 
-def find(input, target):
-    diff = input - target
-    mask = np.ma.less_equal(diff, -1)
+def find(target, input):
+    diff = target - input
+    mask = np.ma.less_equal(diff, 0)
+
     if np.all(mask):
         c = np.abs(diff).argmin()
         return c 
@@ -62,7 +63,8 @@ cdf = np.round(cdf)
 
 output_cdf = np.zeros(256)
 for i in range(256):
-    output_cdf[i] = find(cdf[i], Erlang_cdf)
+    output_cdf[i] = find(Erlang_cdf, cdf[i])
+    #print(cdf[i],"=>",Erlang_cdf[i],"=>",output_cdf[i])
 
 output = np.zeros((img_h,img_w))
 for i in range(img_h):
@@ -91,6 +93,8 @@ for i in range(256):
     output_cdfo[i] = temp
 
 output_cdfo *= 255
+
+
 f1 = plt.figure(6)
 plt.title(label="Output CDF",fontsize=20,color="black")
 plt.plot(output_cdfo)
