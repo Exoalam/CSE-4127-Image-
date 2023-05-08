@@ -38,6 +38,10 @@ img = cv2.imread('input.png', cv2.IMREAD_GRAYSCALE)
 img_h = img.shape[0]
 img_w = img.shape[1]
 
+f1 = plt.figure(2)
+plt.title(label="Histogram of Input Image",fontsize=20,color="black")
+plt.hist(img.ravel(),256,[0,256])
+
 histogram = np.zeros(256)
 for i in range(img_h):
     for j in range(img_w):
@@ -73,14 +77,23 @@ output = output * 255
 
 output = output.astype(np.uint8)
 output_histogram = np.zeros(256)
-f1 = plt.figure(4)
-plt.title(label="Histogram of output Image",fontsize=20,color="black")
-plt.hist(output.ravel(),256,[0,256])
+
 for i in range(img_h):
     for j in range(img_w):
         intensity = output[i,j]
         output_histogram[intensity] += 1
 output_pdf = output_histogram/(img_h*img_w) 
+
+output_cdfo = np.zeros(256)
+temp = 0
+for i in range(256):
+    temp += output_pdf[i]
+    output_cdfo[i] = temp
+
+output_cdfo *= 255
+f1 = plt.figure(6)
+plt.title(label="Output CDF",fontsize=20,color="black")
+plt.plot(output_cdfo)
 
 f1 = plt.figure(4)
 plt.title(label="Histogram of output Image",fontsize=20,color="black")
