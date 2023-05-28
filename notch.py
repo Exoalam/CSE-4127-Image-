@@ -18,23 +18,31 @@ mag = np.abs(shift)
 angle = np.angle(shift)
 
 
-
+f1 = plt.figure(1)
 plt.imshow(np.log(np.abs(shift)),'gray')
-plt.show()
 
 
+shape = img.shape
+print(shape)
 
+x = int(input('X_axis: '))
+y = int(input('Y_axis: '))
+r = int(input('Distance: '))
 
 notch=np.zeros((img.shape[0],img.shape[1]),dtype=np.float32)
 for i in range(img.shape[0]):
     for j in range(img.shape[1]):
-        if(i==img.shape[0]//2 and j==img.shape[0]//2):
-           notch[i,j]=0
+        if(math.sqrt((i-x)**2+(j-y)**2)<=r):
+            notch[i,j]=0
         else:
             notch[i,j]=1
   
 
 mag = mag*notch
+
+f1 = plt.figure(2)
+plt.imshow(np.log(np.abs(mag)),'gray')
+plt.show()
         
 op = np.multiply(mag,np.exp(1j*angle))
 
