@@ -3,7 +3,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-img=cv2.imread('input.jpg',cv2.IMREAD_GRAYSCALE)
+img=cv2.imread('input.png',cv2.IMREAD_GRAYSCALE)
 
 cv2.imshow('input',img)
 
