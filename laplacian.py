@@ -6,11 +6,13 @@ img = cv2.imread('input.png', cv2.IMREAD_GRAYSCALE)
 
 image_h = img.shape[0]
 image_w = img.shape[1]
-kernel_size = 3
+kernel_size = 512
 
 laplacian_kernel = np.array(([-1,-1,-1],
                    [-1,8,-1],
                    [-1,-1,-1]))
+
+
 padding_x = (kernel_size - 1)//2 
 padding_y = (kernel_size - 1)//2 
 
