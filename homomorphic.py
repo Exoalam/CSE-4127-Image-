@@ -1,24 +1,82 @@
 import numpy as np
+import cv2
 import matplotlib.pyplot as plt
 
-# define the dimensions of the image
+
 width, height = 512, 512
 
-# create the x and y coordinate arrays
-y, x = np.indices((height, width))
+img = cv2.imread('input.png', cv2.IMREAD_GRAYSCALE)
 
-# define the center and width of the Gaussian
-center_x, center_y = width // 2, height // 2
-sigma = min(width, height) / 4
+angle = float(input("Angle: "))
+gammaL = float(input("Gamma Low: "))
+gammaH = float(input("Gamma High: "))
+c = float(input("C: "))
+D0 = float(input("D0: ")) 
 
-# create the 2D Gaussian
-g = np.exp(-((x - center_x)**2 + (y - center_y)**2) / (2 * sigma**2))
+M = img.shape[0]
+N = img.shape[1]
 
-# normalize the illumination pattern to [0, 1]
-g = g / g.max()
 
-# show the illumination pattern
-plt.imshow(g, cmap='gray')
-plt.colorbar()
+
+angle = np.deg2rad(angle)
+
+x = np.linspace(-1,1,width)
+y = np.linspace(-1,1,height)
+xx, yy = np.meshgrid(x, y)
+
+grad_dir = np.array([np.cos(angle), np.sin(angle)])
+illum_pattern = grad_dir[0] * xx + grad_dir[1] * yy
+
+illum_pattern -= illum_pattern.min()
+illum_pattern /= illum_pattern.max()
+
+corrupt_img = np.multiply(img, illum_pattern)
+
+corrupt_img = cv2.normalize(corrupt_img, None, 0, 1, cv2.NORM_MINMAX)
+
+corrupt_img = np.log1p(corrupt_img)
+
+f = np.fft.fft2(corrupt_img)
+shift = np.fft.fftshift(f)
+mag = np.abs(shift)
+angle = np.angle(shift)
+
+H = np.zeros((M,N))
+for i in range(M):
+    for j in range(N):
+        u = (i - M//2)**2
+        v = (j - N//2)**2
+        r = np.exp(-((c*(u+v))/(2*D0**2)))
+        r = (gammaH-gammaL) *(1-r) + gammaL
+        H[i][j] = r
+
+
+mag = mag * H
+
+op = np.multiply(mag,np.exp(1j*angle))
+
+inv = np.fft.ifftshift(op)
+
+inv = np.real(np.fft.ifft2(inv))
+
+inv = np.exp(inv)-1
+
+inv = cv2.normalize(inv, None, 0, 1, cv2.NORM_MINMAX)
+
+f1 = plt.figure(1)
+plt.imshow(np.log(np.abs(shift)),'gray')
+f1 = plt.figure(2)
+plt.imshow(illum_pattern, cmap='gray')
 plt.title('Illumination Pattern')
+f1 = plt.figure(3)
+plt.imshow(corrupt_img, cmap='gray')
+plt.title('Corrupted Image')
+f1 = plt.figure(4)
+plt.imshow(inv, cmap='gray')
+plt.title('Output')
 plt.show()
+# cv2.imshow("output",inv)
+# cv2.imshow('Corrupt', corrupt_img)
+# cv2.imshow('Illumination Pattern', illum_pattern)
+# cv2.waitKey()
+# cv2.destroyAllWindows()
