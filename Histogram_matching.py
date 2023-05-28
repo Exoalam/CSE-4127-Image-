@@ -15,13 +15,17 @@ def find(target, input):
     return masked_diff.argmin()
 
 x = 256
-k = 2
-u = 3
+k = int(input('Shape Parameter: '))
+u = int(input('Rate Parameter: '))
+
 
 Erlang_Distribution = np.zeros(x)
 for i in range(x):
     Erlang_Distribution[i] = ((i**(k-1))*math.exp(-(i/u)))/((u**k)*math.factorial(k-1))
 
+f1 = plt.figure(7)
+plt.title(label="Erlang_PDF",fontsize=20,color="black")
+plt.plot(Erlang_Distribution)   
 Erlang_cdf = np.zeros(256)
 temp = 0
 for i in range(256):
@@ -32,7 +36,7 @@ Erlang_cdf = cv2.normalize(Erlang_cdf, None, 0, 1, cv2.NORM_MINMAX)
 
 Erlang_cdf *= 255
 f1 = plt.figure(1)
-plt.title(label="CDF",fontsize=20,color="black")
+plt.title(label="Erlong_CDF",fontsize=20,color="black")
 plt.plot(Erlang_cdf)    
 img = cv2.imread('input.png', cv2.IMREAD_GRAYSCALE)
 
@@ -58,6 +62,10 @@ for i in range(256):
 
 cdf *= 255
 
+f1 = plt.figure(8)
+plt.title(label="Input_CDF",fontsize=20,color="black")
+plt.plot(cdf)   
+
 Erlang_cdf = np.round(Erlang_cdf)
 cdf = np.round(cdf)
 
@@ -72,7 +80,7 @@ for i in range(img_h):
         intensity = img[i,j]
         output[i,j] = np.round(output_cdf[intensity])
 
-output = cv2.normalize(output, None, 0, 1, cv2.NORM_MINMAX)
+output = cv2.normalize(output, None, 0, 1, cv2.NORM_MINMAX)q
 
 
 output = output * 255
