@@ -1,5 +1,5 @@
 import numpy as np
-
+import cv2
 def erode(image, kernel):
     height, width = image.shape
     kernel_size = kernel.shape[0]
@@ -10,19 +10,17 @@ def erode(image, kernel):
         for j in range(kernel_offset, width - kernel_offset):
             if np.all(image[i - kernel_offset:i + kernel_offset + 1, j - kernel_offset:j + kernel_offset + 1] == kernel):
                 result[i, j] = 1
+                
 
     return result
 
 # Example usage
-image = np.array([[0, 0, 0, 0, 0],
-                  [0, 1, 1, 1, 0],
-                  [0, 1, 1, 1, 0],
-                  [0, 1, 1, 1, 0],
-                  [0, 0, 0, 0, 0]], dtype=np.uint8)
-
-kernel = np.array([[1, 1, 1],
-                   [1, 1, 1],
-                   [1, 1, 1]], dtype=np.uint8)
+image = cv2.imread("j.png", cv2.IMREAD_GRAYSCALE)
+image = np.divide(image, 255)
+kernel = np.ones((5,5),np.uint8)
 
 eroded_image = erode(image, kernel)
-print(eroded_image)
+
+
+cv2.imshow("output", eroded_image)
+cv2.waitKey(0)

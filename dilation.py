@@ -20,9 +20,7 @@ image = np.array([[0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0],
                   [0, 0, 0, 0, 0]], dtype=np.uint8)
 
-kernel = np.array([[0, 1, 0],
-                   [1, 1, 1],
-                   [0, 1, 0]], dtype=np.uint8)
+kernel = np.ones((3,3),np.uint8)
 
 dilated_image = dilate(image, kernel)
 print(dilated_image)
