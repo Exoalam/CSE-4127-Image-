@@ -8,7 +8,6 @@ def erode(image, kernel):
 
     for i in range(kernel_offset, height - kernel_offset):
         for j in range(kernel_offset, width - kernel_offset):
-            print(image[i - kernel_offset:i + kernel_offset + 1,j - kernel_offset:j + kernel_offset + 1])
             if np.all(image[i - kernel_offset:i + kernel_offset + 1, j - kernel_offset:j + kernel_offset + 1] == kernel):
                 result[i, j] = 1
 
