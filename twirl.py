@@ -41,13 +41,12 @@ max_radius = min(center[0], center[1])
 
 twirled_image = twirl_image(image, center, np.radians(rotation_angle), max_radius)
 
-twirled_image_rgb = cv2.cvtColor(twirled_image, cv2.COLOR_BGR2RGB)
 
 fig, (ax1, ax2) = plt.subplots(1, 2)
-ax1.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+ax1.imshow(image)
 ax1.set_title("Original Image")
 ax1.axis("off")
-ax2.imshow(twirled_image_rgb)
+ax2.imshow(twirled_image)
 ax2.set_title("Twirled Image")
 ax2.axis("off")
 plt.show()
