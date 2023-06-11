@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def angular_image(image, center, angle, rmax):
+def angular_image(image, center, a, T):
 
     image = image.astype(np.float32) / 255.0
 
@@ -15,7 +15,7 @@ def angular_image(image, center, angle, rmax):
 
     distance = np.sqrt(x**2 + y**2)
 
-    beta = np.arctan2(y,x) + angle * ((rmax-distance) / rmax)
+    beta = np.arctan2(y,x) + a * np.sin((2*np.pi*distance)/T)
 
     x_new = distance * np.cos(beta)
     y_new = distance * np.sin(beta)
@@ -23,10 +23,10 @@ def angular_image(image, center, angle, rmax):
     x_new += center[0]
     y_new += center[1]
 
-    mask = distance > rmax
+    # mask = distance > rmax
 
-    x_new[mask] = x[mask] + center[0]
-    y_new[mask] = y[mask] + center[1]
+    # x_new[mask] = x[mask] + center[0]
+    # y_new[mask] = y[mask] + center[1]
 
     ang_image = cv2.remap(image, x_new.astype(np.float32), y_new.astype(np.float32),
                               interpolation=cv2.INTER_LINEAR)
@@ -36,10 +36,10 @@ def angular_image(image, center, angle, rmax):
 image = cv2.imread("input.jpg")
 
 center = (image.shape[1] // 2, image.shape[0] // 2)
-rotation_angle = 90  
-max_radius = min(center[0], center[1]) 
+a = 0.05
+T = 50
 
-anged_image = angular_image(image, center, np.radians(rotation_angle), max_radius)
+anged_image = angular_image(image, center, a, T)
 
 fig, (ax1, ax2) = plt.subplots(1, 2)
 ax1.imshow(image)
