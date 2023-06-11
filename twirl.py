@@ -20,11 +20,11 @@ def twirl_image(image, center, angle, rmax):
     distance = np.sqrt(x**2 + y**2)
 
     # Calculate the increasing angle based on distance
-    angle_increase = angle * (distance / rmax)
+    beta = np.arctan2(y,x) + angle * ((rmax-distance) / rmax)
 
     # Calculate the new coordinates after twirl operation
-    x_new = x * np.cos(angle_increase) - y * np.sin(angle_increase)
-    y_new = x * np.sin(angle_increase) + y * np.cos(angle_increase)
+    x_new = distance * np.cos(beta)
+    y_new = distance * np.sin(beta)
 
     # Translate coordinates back to original position
     x_new += center[0]
@@ -44,11 +44,11 @@ def twirl_image(image, center, angle, rmax):
     return (twirled_image * 255).astype(np.uint8)
 
 # Load the image
-image = cv2.imread("input.png")
+image = cv2.imread("input.jpg")
 
 # Define the center point and parameters for the twirl operation
 center = (image.shape[1] // 2, image.shape[0] // 2)
-rotation_angle = 45  # Angle of rotation (in degrees)
+rotation_angle = 90  # Angle of rotation (in degrees)
 max_radius = min(center[0], center[1])  # Maximum radial distance (rmax)
 
 # Apply the twirl operation to the image
