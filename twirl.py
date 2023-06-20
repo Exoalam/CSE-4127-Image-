@@ -1,4 +1,5 @@
 import cv2
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -14,7 +15,6 @@ def twirl_image(image, center, angle, rmax):
     y -= center[1]
 
     distance = np.sqrt(x**2 + y**2)
-
     beta = np.arctan2(y,x) + angle * ((rmax-distance) / rmax)
 
     x_new = distance * np.cos(beta)

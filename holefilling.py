@@ -37,13 +37,15 @@ plt.show(block=True)
 
 print(point_list)
 input = img
-
+cv2.imshow("asda",c_img)
 output1 = np.zeros((img.shape[0],img.shape[1]), dtype=np.uint8)
 for i in point_list:
     while 1:
         output1[i] = 1*255
         output = cv2.dilate(output1,kernel1,iterations = 1)
         output = cv2.bitwise_and(c_img, output)
+        cv2.imshow("asd",output)
+        cv2.waitKey(0)
         if (output==output1).all():
             break
         output1 = output
