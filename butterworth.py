@@ -34,15 +34,15 @@ im.figure.canvas.mpl_connect('button_press_event', onclick)
 plt.show(block=True)
 print(point_list)
 D0 = 15
-N = 1
+N = 2
 bw=np.zeros((img.shape[0],img.shape[1]),dtype=np.float32)
 for i in range(img.shape[0]):
     for j in range(img.shape[1]):
-        Du = (i-m-point_list[0][1])**2
-        Dv = (j-n-point_list[0][0])**2
+        Du = (i-point_list[0][1])**2
+        Dv = (j-point_list[0][0])**2
         Dk = np.sqrt(Du+Dv)
-        _Du = (i-m+point_list[0][1])**2
-        _Dv = (j-n+point_list[0][0])**2
+        _Du = (i+point_list[0][1])**2
+        _Dv = (j+point_list[0][0])**2
         _Dk = np.sqrt(_Du+_Dv)
         DP1 = 1+(D0/Dk)**(2*N)
         DP2 = 1+(D0/_Dk)**(2*N) 

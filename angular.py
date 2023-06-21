@@ -16,7 +16,6 @@ def angular_image(image, center, a, T):
     distance = np.sqrt(x**2 + y**2)
 
     beta = np.arctan2(y,x) + a * np.sin((2*np.pi*distance)/T)
-
     x_new = distance * np.cos(beta)
     y_new = distance * np.sin(beta)
 
