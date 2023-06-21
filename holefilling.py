@@ -6,7 +6,7 @@ matplotlib.use('TkAgg')
 
 point_list=[]
 
-img = cv2.imread('input1.jpg', 0)
+img = cv2.imread('img2.jpg', 0)
 r, img = cv2.threshold(img, 130, 255, cv2.THRESH_BINARY)
 c_img = cv2.bitwise_not(img)
 kernel1 = cv2.getStructuringElement(cv2.MORPH_CROSS,(50,50))
@@ -40,9 +40,12 @@ input = img
 cv2.imshow("asda",c_img)
 output1 = np.zeros((img.shape[0],img.shape[1]), dtype=np.uint8)
 for i in point_list:
+    
     while 1:
-        output1[i] = 1*255
+        output1[i[1],i[0]] = 1*255
+        cv2.imshow("asdad",output1)
         output = cv2.dilate(output1,kernel1,iterations = 1)
+
         output = cv2.bitwise_and(c_img, output)
         cv2.imshow("asd",output)
         cv2.waitKey(0)
